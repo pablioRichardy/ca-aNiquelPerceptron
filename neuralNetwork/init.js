@@ -11,7 +11,7 @@ function generateCombinations() {
     for (let i = 0; i < range.length; i++) {
         for (let j = 0; j < range.length; j++) {
             for (let k = 0; k < range.length; k++) {
-                combinations.push([range[i], range[j], range[k], range[i] && range[j] === range[k] ? 1 : 0]);
+                combinations.push([range[i], range[j], range[k], range[i] == range[j] && range[j] === range[k] ? 1 : 0]);
             }
         }
     }
