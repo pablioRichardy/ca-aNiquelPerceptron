@@ -1,7 +1,7 @@
 import { NeuralNetwork } from "./NeuralNetwork.js";
 
 // Exemplo de uso
-let nn = new NeuralNetwork(3, 4, 1, 0.6);
+export const nn = new NeuralNetwork(3, 4, 1, 0.6);
 
 // Gerar todas as combinações possíveis de 1 a 6
 function generateCombinations() {
