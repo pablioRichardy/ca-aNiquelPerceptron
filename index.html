@@ -1,16 +1,75 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Caça Niqueis LVQ</title>
+    <title>Caça-Níqueis LVQ</title>
 
     <link rel="stylesheet" href="treatsContent.css">
-    <script src="script.js" type="module"></script>
+    <script src="script.js" type="module" defer></script>
 </head>
 <body>
     <displayContentOnLoad>  
-        <!-- Começe a criar seu HTML aqui dentro e não apague essa tag <displayContentOnLoad></displayContentOnLoad> -->
+        <div id="content">
+            <h1>Caça-Níqueis</h1>
+            <div class="options">
+                <div>
+                    <div class="slot" id="slot1"></div>
+                </div>
+                <div>
+                    <div class="slot" id="slot2"></div>
+                </div>
+                <div>
+                    <div class="slot" id="slot3"></div>
+                </div>
+            </div>
+            <button id="validateBtn">SORTEAR</button>
+            <div id="result"></div>
+        </div>
     </displayContentOnLoad>
+    <script>
+        // Definindo qual símbolo representa cada número
+        const fruits = {
+            1: "🍒", 
+            2: "🍋", 
+            3: "🍉", 
+            4: "🍇", 
+            5: "🍓", 
+            6: "🍍"  
+        };
+
+        // Função para girar os slots aleatoriamente
+        function spinSlots() {
+            const slotValues = [];
+            document.querySelectorAll('.slot').forEach(slot => {
+                const randomIndex = Math.floor(Math.random() * 6) + 1; // Gera um número entre 1 e 6
+                slot.innerText = fruits[randomIndex]; // Define o símbolo correspondente à fruta
+                slotValues.push(randomIndex);
+            });
+            return slotValues;
+        }
+
+        // Validar se todos os slots têm a mesma fruta
+        document.getElementById('validateBtn').addEventListener('click', function() {
+
+            // Gira os slots
+            const [value1, value2, value3] = spinSlots();
+
+            const isValid = validate(parseInt(value1), parseInt(value2), parseInt(value3));
+            console.log(isValid, value1, value2, value3);
+
+            const resultDiv = document.getElementById('result');
+
+            resultDiv.classList.remove('green', 'red');
+
+            if (isValid) {
+                resultDiv.innerText = 'Ganhou!';
+                resultDiv.classList.add('green');
+            } else {
+                resultDiv.innerText = 'Perdeu!';
+                resultDiv.classList.add('red'); 
+            }
+        });
+    </script>
 </body>
 </html>
