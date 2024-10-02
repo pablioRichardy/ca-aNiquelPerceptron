@@ -1,4 +1,4 @@
-import { initNetwork, nn } from "./NeuralNetwork/init.js";
+import { initNetwork, nn } from "./neuralNetwork/init";
 
 // Carregando conteúdo após a Rede Neural
 initNetwork().then( 

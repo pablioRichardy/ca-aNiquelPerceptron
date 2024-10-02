@@ -1,0 +1,166 @@
+body {
+    height: 100vh;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-family: 'Arial', sans-serif;
+    background-color: #121212; 
+}
+
+#content {
+    position: relative;
+    width: 350px;
+    height: 400px;
+    padding: 20px;
+    background-color: #2E2E2E; 
+    border-radius: 15px;
+    border: 3px solid #FFD700; 
+    text-align: center;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.5);
+}
+
+h1 {
+    color: #FFD700;
+    font-size: 30px;
+    font-weight: bold;
+
+    flex-grow: 1;
+}
+
+#cabecalho {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline; 
+
+    position: relative; 
+
+    margin-bottom: 50px;
+}
+
+.slot {
+    height: 80px;
+    width: 80px;
+    line-height: 80px;
+    
+    font-size: 50px;
+    text-align: center;
+    
+    background-color: #FFFFFF;
+    border: 3px solid #FFD700; 
+    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.4); 
+
+    border-radius: 10px;
+    margin: 10px;
+    
+    transition: transform 0.2s; 
+    cursor: pointer;
+}
+
+.slot:hover {
+    transform: scale(1.05); 
+    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.6);
+}
+
+.options {
+    display: flex;
+    justify-content: space-around;
+}
+
+#validateBtn {
+    padding: 10px 20px;
+    margin-top: 20px;
+    border: none;
+    border-radius: 5px;
+
+    font-size: 18px;
+    font-weight: bold;
+
+    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.3);
+    color: #FFF;
+    background-color: #d7410b;
+    transition: background-color 0.3s ease, transform 0.2s;
+
+    cursor: pointer;
+}
+
+#validateBtn:hover {
+    background-color: #ff2600; 
+    transform: translateY(-2px); 
+}
+
+#result {
+    margin-top: 20px;
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.green {
+    color: #09ff00;
+}
+
+.red {
+    color: #ff2600;
+}
+
+/* Estilos do histórico */
+.combinacoes {
+    height: 260px; 
+    width: 335px;
+
+    border-radius: 10px;
+    padding-bottom: 10px;
+
+    border: 1px solid #FFD700;
+    background-color: #2E2E2E;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.5); 
+    
+    overflow-y: auto; 
+    position: absolute; 
+    top: 100%;
+}
+.combinacoes::-webkit-scrollbar {
+    width: 3px;
+}
+
+.combinacoes::-webkit-scrollbar-thumb {
+    background: #FFD700; 
+    border-radius: 10px; 
+}
+
+.combinacoes h2 {
+    color: #FFD700; 
+    font-size: 20px; 
+    margin-bottom: 10px;
+}
+
+#combinationList {
+    margin-top: 10px;
+    font-size: 18px;
+    color: #FFFFFF;
+}
+
+#combinationList br {
+    margin: 5px 0;
+}
+
+/* Botão para mostrar/esconder combinações */
+#toggleCombinationsBtn {
+    font-size: 18px;
+    font-weight: bold;
+
+    margin-top: 10px;
+    background-color: #d7410b;
+    border: none; 
+    border-radius: 5px;
+    color: #FFF;
+    padding: 8px 12px;
+    cursor: pointer;
+     transition: background-color 0.3s ease, transform 0.2s;
+}
+
+#toggleCombinationsBtn:hover {
+    background-color: #ff2600;
+    transform: translateY(-2px); 
+}

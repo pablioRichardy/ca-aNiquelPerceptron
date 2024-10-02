@@ -1,75 +1,126 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Caça-Níqueis LVQ</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Caça-Níqueis Perceptron</title>
 
-    <link rel="stylesheet" href="treatsContent.css">
+    <link rel="stylesheet" href="styles/treatsContent.css" />
     <script src="script.js" type="module" defer></script>
-</head>
-<body>
-    <displayContentOnLoad>  
-        <div id="content">
-            <h1>Caça-Níqueis</h1>
-            <div class="options">
-                <div>
-                    <div class="slot" id="slot1"></div>
-                </div>
-                <div>
-                    <div class="slot" id="slot2"></div>
-                </div>
-                <div>
-                    <div class="slot" id="slot3"></div>
-                </div>
-            </div>
-            <button id="validateBtn">SORTEAR</button>
-            <div id="result"></div>
+  </head>
+  <body>
+      <div id="content">
+        <div id="cabecalho">
+          <h1>Caça-Níqueis</h1>
+          <button id="toggleCombinationsBtn">Histórico</button>
+          <div id="combinacoes" class="combinacoes" style="display: none">
+            <h2>Combinações</h2>
+            <div id="combinationList"></div>
+          </div>
         </div>
-    </displayContentOnLoad>
-    <script>
-        // Definindo qual símbolo representa cada número
-        const fruits = {
-            1: "🍒", 
-            2: "🍋", 
-            3: "🍉", 
-            4: "🍇", 
-            5: "🍓", 
-            6: "🍍"  
-        };
+        <div class="options">
+          <div class="slot" id="slot1"></div>
+          <div class="slot" id="slot2"></div>
+          <div class="slot" id="slot3"></div>
+        </div>
+        <button id="validateBtn">SORTEAR</button>
+        <div id="result"></div>
+      </div>
 
-        // Função para girar os slots aleatoriamente
-        function spinSlots() {
-            const slotValues = [];
-            document.querySelectorAll('.slot').forEach(slot => {
-                const randomIndex = Math.floor(Math.random() * 6) + 1; // Gera um número entre 1 e 6
-                slot.innerText = fruits[randomIndex]; // Define o símbolo correspondente à fruta
-                slotValues.push(randomIndex);
-            });
-            return slotValues;
+    <script>
+      // Definindo qual símbolo representa cada número
+      const fruits = {
+        1: "🍒",
+        2: "🍋",
+        3: "🍉",
+        4: "🍇",
+        5: "🍓",
+        6: "🍍",
+      };
+
+      // Array para armazenar o histórico
+      const history = [];
+
+      // Função para girar os slots aleatoriamente
+      function spinSlots() {
+        const slotValues = [];
+        // Gera um número aleatório para o primeiro slot
+        const baseValue = Math.floor(Math.random() * 6) + 1; // Número entre 1 e 6
+        slotValues.push(baseValue); // Adiciona o valor base ao array
+
+        // Gera os próximos slots com maior chance de serem iguais
+        for (let i = 1; i < 3; i++) {
+          if (Math.random() < 0.3) {
+            slotValues.push(baseValue); // Mantém a mesma fruta
+          } else {
+            //gera um novo número aleatório
+            slotValues.push(Math.floor(Math.random() * 6) + 1);
+          }
         }
 
-        // Validar se todos os slots têm a mesma fruta
-        document.getElementById('validateBtn').addEventListener('click', function() {
+        // Atualiza os slots com os valores gerados
+        document.querySelectorAll(".slot").forEach((slot, index) => {
+          slot.innerText = fruits[slotValues[index]];
+        });
+        return slotValues;
+      }
 
-            // Gira os slots
-            const [value1, value2, value3] = spinSlots();
+      // Validar se todos os slots têm a mesma fruta
+      document
+        .getElementById("validateBtn")
+        .addEventListener("click", function () {
+          // Gira os slots
+          const [value1, value2, value3] = spinSlots();
 
-            const isValid = validate(parseInt(value1), parseInt(value2), parseInt(value3));
-            console.log(isValid, value1, value2, value3);
+          const isValid = validate(value1, value2, value3);
+          console.log(isValid, value1, value2, value3);
 
-            const resultDiv = document.getElementById('result');
+          const resultDiv = document.getElementById("result");
+          resultDiv.classList.remove("green", "red");
 
-            resultDiv.classList.remove('green', 'red');
+          // Salva o resultado no histórico
+          const resultText = isValid ? "Ganhou!" : "Perdeu!";
+          resultDiv.innerText = resultText;
+          resultDiv.classList.add(isValid ? "green" : "red");
 
-            if (isValid) {
-                resultDiv.innerText = 'Ganhou!';
-                resultDiv.classList.add('green');
-            } else {
-                resultDiv.innerText = 'Perdeu!';
-                resultDiv.classList.add('red'); 
-            }
+          // Adiciona a combinação ao histórico
+          history.push({
+            combination: `${fruits[value1]} ${fruits[value2]} ${fruits[value3]}`,
+            result: resultText,
+          });
+        });
+
+      // Função de validação para verificar se as entradas são iguais
+      function validate(value1, value2, value3) {
+        return value1 === value2 && value2 === value3;
+      }
+
+      // Mostrar ou ocultar o histórico
+      document
+        .getElementById("toggleCombinationsBtn")
+        .addEventListener("click", function () {
+          const combinacoesDiv = document.getElementById("combinacoes");
+          const combinationList = document.getElementById("combinationList");
+
+          // Alterna a visibilidade do histórico
+          if (combinacoesDiv.style.display === "none") {
+            combinacoesDiv.style.display = "block";
+            // Limpa a lista antes de adicionar
+            combinationList.innerHTML = "";
+
+            // Adiciona cada entrada do histórico à lista
+            history.forEach((entry) => {
+              const entryDiv = document.createElement("div");
+              // Aplica a classe correspondente ao resultado
+              entryDiv.innerHTML = `${entry.combination} - <span class="${
+                entry.result === "Ganhou!" ? "green" : "red"
+              }">${entry.result}</span>`;
+              combinationList.appendChild(entryDiv);
+            });
+          } else {
+            combinacoesDiv.style.display = "none"; // Fecha o histórico
+          }
         });
     </script>
-</body>
+  </body>
 </html>
