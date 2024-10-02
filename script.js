@@ -29,11 +29,11 @@ window.validate = function(slot1, slot2, slot3) {
 			// Altura
 			icon_height = 79,	
 			// Quantidade
-			num_icons = 9,	
+			num_icons = 6,	
 			// Velocidade da animação
 			time_per_icon = 100,
 			// Indexes
-			indexes = [0, 0, 0];
+			indexes = [1, 1, 1];
 
 
 
@@ -87,18 +87,21 @@ function rollAll() {
 		
 		// Quando os rolos terminam de rodar 
 		.then((deltas) => {
-			// Soma dos indexes
-			deltas.forEach((delta, i) => indexes[i] = (indexes[i] + delta)%num_icons);
-			
+			// Soma dos indexes e resolve o problema do 6 resultando no index 0
+			deltas.forEach((delta, i) => {
+				indexes[i] = (indexes[i] + delta) % num_icons;
+				if (indexes[i] === 0) {
+					indexes[i] = num_icons;
+				}
+			});			
             document.getElementById('validate').textContent = validate(indexes[0], indexes[1], indexes[2]);
             document.getElementById('feedforward').textContent = nn.feedforward(indexes);
             document.getElementById('indexes').textContent = ` ${indexes.join(', ')}`;
 			
 			// Condição de vitória (2 simbolos iguais da esquerda pra direita e da direita da pra esquerda e 3 simbolos iguais)
-			if (indexes[0] == indexes[1] || indexes[1] == indexes[2]) {
-				const winCls = indexes[0] == indexes[2] ? "win2" : "win1";
-				document.querySelector(".slots").classList.add(winCls);
-				setTimeout(() => document.querySelector(".slots").classList.remove(winCls), 2000)
+			if (validate(indexes[0], indexes[1], indexes[2])) {
+				document.querySelector(".slots").classList.add("win1");
+				setTimeout(() => document.querySelector(".slots").classList.remove("win1"), 2000);
 			}
 		
 			// Começa novamente
